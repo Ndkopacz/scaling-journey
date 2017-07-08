@@ -4,8 +4,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class SpriteWalk {
-    private static BufferedImage spriteSheet_shadow;
+public class SpriteThrust {
 
     private static BufferedImage spriteSheet_body;
     private static BufferedImage spriteSheet_torso;
@@ -15,14 +14,17 @@ public class SpriteWalk {
     private static BufferedImage spriteSheet_hood;
     private static BufferedImage spriteSheet_gloves;
     private static BufferedImage spriteSheet_shield;
+    private static BufferedImage spriteSheet_shadow;
     private static final int TILE_SIZE = 64;
+    private static final int TILE_SIZE_LARGE = 192;
+
 
     public static BufferedImage loadSprite(String file) {
 
         BufferedImage sprite = null;
 
         try {
-            sprite = ImageIO.read(new File("assets/spritesheets/walking/" + file));
+            sprite = ImageIO.read(new File("assets/spritesheets/thrust/" + file));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -31,7 +33,6 @@ public class SpriteWalk {
     }
 
     public static BufferedImage[] getSprite(int xGrid, int yGrid) {
-
         if (spriteSheet_shadow == null) {
         	spriteSheet_shadow = loadSprite("shadow.png");
         }
@@ -57,10 +58,10 @@ public class SpriteWalk {
         	spriteSheet_gloves = loadSprite("HANDS_plate_armor_gloves.png");
         }
         if (spriteSheet_shield == null) {
-        	spriteSheet_shield = loadSprite("WEAPON_shield_cutout_body.png");
-        }
-        if (spriteSheet_shield == null) {
-        	spriteSheet_shield = loadSprite("WEAPON_shield_cutout_body.png");
+//        	spriteSheet_shield = loadSprite("glowsword_red_male.png");
+        	spriteSheet_shield = loadSprite("WEAPON_long_spear.png");
+
+
         }
         
         BufferedImage[] sprites = new BufferedImage[9];
@@ -72,7 +73,7 @@ public class SpriteWalk {
         sprites[5] = spriteSheet_belt.getSubimage(xGrid * TILE_SIZE, yGrid * TILE_SIZE, TILE_SIZE, TILE_SIZE);
         sprites[6] = spriteSheet_hood.getSubimage(xGrid * TILE_SIZE, yGrid * TILE_SIZE, TILE_SIZE, TILE_SIZE);
         sprites[7] = spriteSheet_gloves.getSubimage(xGrid * TILE_SIZE, yGrid * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-        sprites[8] = spriteSheet_shield.getSubimage(xGrid * TILE_SIZE, yGrid * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        sprites[8] = spriteSheet_shield.getSubimage(xGrid * TILE_SIZE_LARGE, yGrid * TILE_SIZE_LARGE, TILE_SIZE_LARGE, TILE_SIZE_LARGE);
 
         return sprites;
     }

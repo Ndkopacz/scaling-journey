@@ -22,6 +22,11 @@ public class Player extends JPanel
 	private Animation slashUp = null;
 	private Animation slashDown = null;
 	
+	private Animation thrustLeft = null;
+	private Animation thrustRight = null;
+	private Animation thrustUp = null;
+	private Animation thrustDown = null;
+	
 	private Animation castLeft = null;
 	private Animation castRight = null;
 	private Animation castUp = null;
@@ -92,8 +97,35 @@ public class Player extends JPanel
 		for(int i=0;i<=5;i++){
 			slashingDown[i] = SpriteSlash.getSprite(i, 2);
 		}
-		slashingDown[6] = SpriteWalk.getSprite(0, 2);
+		slashingDown[6] = SpriteWalk.getSprite(0, 2);	
+		
+/////	
+		BufferedImage[][] thrustingLeft = new BufferedImage[7][9];
+		for(int i=0;i<=5;i++){
+			thrustingLeft[i] = SpriteThrust.getSprite(i, 1);
+		}
+		thrustingLeft[6] = SpriteWalk.getSprite(0, 1);
+		
+		BufferedImage[][] thrustingRight = new BufferedImage[7][9];
+		for(int i=0;i<=5;i++){
+			thrustingRight[i] = SpriteThrust.getSprite(i, 3);
+		}
+		thrustingRight[6] = SpriteWalk.getSprite(0, 3);
 
+		BufferedImage[][] thrustingUp = new BufferedImage[7][9];
+		for(int i=0;i<=5;i++){
+			thrustingUp[i] = SpriteThrust.getSprite(i, 0);
+		}
+		thrustingUp[6] = SpriteWalk.getSprite(0, 0);
+
+		BufferedImage[][] thrustingDown = new BufferedImage[7][9];
+		for(int i=0;i<=5;i++){
+			thrustingDown[i] = SpriteThrust.getSprite(i, 2);
+		}
+		thrustingDown[6] = SpriteWalk.getSprite(0, 2);
+		
+		
+//////
 		
 		BufferedImage[][] standingLeft = {SpriteWalk.getSprite(0, 1)};
 		BufferedImage[][] standingRight = {SpriteWalk.getSprite(0, 3)};
@@ -121,6 +153,11 @@ public class Player extends JPanel
 		slashRight = new Animation(slashingRight, 100, false);
 		slashUp = new Animation(slashingUp, 100, false);	
 		slashDown = new Animation(slashingDown, 100, false);
+		
+		thrustLeft = new Animation(thrustingLeft, 100, false);	
+		thrustRight = new Animation(thrustingRight, 100, false);
+		thrustUp = new Animation(thrustingUp, 100, false);	
+		thrustDown = new Animation(thrustingDown, 100, false);
 		
 		castLeft = new Animation(castingLeft, 100, false);	
 		castRight = new Animation(castingRight, 100, false);
@@ -175,6 +212,25 @@ public class Player extends JPanel
 					animation.start();
 				} else if (direction == 2){
 					animation = slashDown;
+					animation.reset();
+					animation.start();
+				}
+				break;
+			case '1':
+				if (direction == 1){
+					animation = thrustLeft;
+					animation.reset();
+					animation.start();
+				} else if (direction == 3){
+					animation = thrustRight;
+					animation.reset();
+					animation.start();
+				} else if (direction == 0){
+					animation = thrustUp;
+					animation.reset();
+					animation.start();
+				} else if (direction == 2){
+					animation = thrustDown;
 					animation.reset();
 					animation.start();
 				}
