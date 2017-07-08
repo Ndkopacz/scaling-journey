@@ -32,6 +32,9 @@ public class Player extends JPanel
 	private Animation castUp = null;
 	private Animation castDown = null;
 	
+	private String[][] mapLayout = null;
+	private int tileSize = 32;
+	
 	
 	private int direction = 2;
 	
@@ -47,6 +50,7 @@ public class Player extends JPanel
 	private boolean upPressed = false;
 	private boolean downPressed = false;
 	private KeyListener kl = null;
+	private int walkSpeed = 2;
 	
 	private int xLocation = 0;
 	private int yLocation = 0;
@@ -399,18 +403,66 @@ public class Player extends JPanel
   
   
   public void updateLocation(){
-	  if (leftPressed ){
-		  yLocation = yLocation - 1;
+	  //Determine the direction we are going, call checkOutOfBounds passing in our speed to see if we are allowed to move there
+	  if (leftPressed && checkOutOfBounds(0,-walkSpeed)){
+		  yLocation = yLocation - walkSpeed;
 	  }
-	  if (rightPressed ){
-		  yLocation = yLocation + 1;
+	  //was 50
+	  if (rightPressed && checkOutOfBounds(0,walkSpeed+(int)(0.64*tileSize))){
+		  yLocation = yLocation + walkSpeed;
 	  }
-	  if (upPressed ){
-		  xLocation = xLocation - 1;
+	  if (upPressed && checkOutOfBounds(-walkSpeed,0)){
+		  xLocation = xLocation - walkSpeed;
 	  }
-	  if (downPressed ){
-		  xLocation = xLocation + 1;
+	  //was 19
+	  if (downPressed && checkOutOfBounds(walkSpeed+(int)(0.24*tileSize),0)){		  
+		  xLocation = xLocation + walkSpeed;
 	  }
+  }
+  
+  //Using the speed in the x and y directions (dx and dy), check to see if the spot we are about to move to is valid.
+  public boolean checkOutOfBounds(int dx, int dy){
+	  //First figure out what tile we are about to move to.  The top left tile is 0,0.
+	  
+	  int xTile = Math.floorDiv(xLocation+dx,tileSize); //Top edge of character shadow
+	  int xTile2 = xTile; //Bottom edge of character shadow (see note about xTile2)
+	  
+	  //Right edge of character shadow
+	  int yTile = Math.floorDiv(yLocation+dy,tileSize);	  //Right edge of character shadow 
+	  int yTile2 = yTile; //Left edge of character shadow (see note about yTile2 below)
+	  
+	  
+	  //This was added to fix a bug where as long as the "left" part of your shadow was on solid land, you could float over an invalid tile
+	  //while moving vertically. Only set the yTile2 if we are moving vertically.
+	  if(dx != 0)
+	  {
+		  yTile2 = Math.floorDiv(yLocation+dy+(int)(0.64*tileSize),tileSize);
+	  }
+	  
+	  //This was added to fix a bug where as long as the "top" part of your shadow was on solid land, you could float over an invalid tile
+	  //while moving horizontally. Only set the xTile2 if we are moving horizontally.
+	  if(dy != 0)
+	  {
+		  xTile2 = Math.floorDiv(xLocation+dx+(int)(0.24*tileSize),tileSize);
+	  }
+	  
+	  //Important check #1: make sure we aren't trying to walk off the boundaries of the map
+	  if(yTile < 0 || xTile < 0 || yTile >= mapLayout[0].length || xTile >= mapLayout.length-1 ){
+		  return false;
+	  } 
+	  
+	  //Grab the tile label from the map
+	  String tile = mapLayout[xTile][yTile];
+	  String tile2 = mapLayout[xTile][yTile2];
+	  String tile3 = mapLayout[xTile2][yTile];
+
+	  //Important check #2: make sure we aren't about to move to an invalid tile
+	  if(tile.equals("000") || tile.equals("1BB") || tile2.equals("000") || tile2.equals("1BB")|| tile3.equals("000") || tile3.equals("1BB")){
+		  return false;
+	  }
+
+	  //If we passed all of the tests, we are allowed to move to the spot
+	  return true;
   }
   
   public KeyListener getKeyListener(){
@@ -449,40 +501,19 @@ public class Player extends JPanel
 	 }
   }
   
-//  public static void main(String[] args) {
-//    JFrame frame = new JFrame();
-//    Player player = new Player();
-//
-//    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//    frame.setSize(200, 200);
-//    frame.getContentPane().add(player);
-//    frame.setVisible(true);
-//
-//        
-//    Runnable r = new Runnable() {
-//        public void run() {
-//        	player.update();
-//        }
-//    };
-//    new Thread(r).start();    
-//  }
   
   public BufferedImage[] getPlayerSprite(){
 	  return animation.getSprite();
   }
 	
-//  @Override
-//  public void paintComponent(Graphics g) {
-//      super.paintComponent(g);      
-//	  g.drawImage(animation.getSprite(), 0, 0, null);	  
-//	  if(System.currentTimeMillis() - nextRefresh > 0)
-//	  {
-//		nextRefresh += refreshRate_s; 
-//		this.repaint();
-//		this.setFocusable(true);
-//		this.requestFocusInWindow();
-//	  }
-//  }
+  //Map calls this to give the player access to the map
+  public void setMapLayout(String[][] mapLayout){
+	  this.mapLayout = mapLayout;
+	  
+  }
+  public void setTileSize(int tileSize){
+	  this.tileSize = tileSize;
+  }
 
 
 

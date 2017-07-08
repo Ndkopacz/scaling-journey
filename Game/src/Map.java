@@ -147,42 +147,35 @@ public class Map extends JPanel {
             }
         }
     	
-    
-//    	
+      	
 //        int preferredWidth = (numCols+2) * PREFERRED_GRID_SIZE_PIXELS;
 //        int preferredHeight = (numRows+2) * PREFERRED_GRID_SIZE_PIXELS;
 //        setPreferredSize(new Dimension(preferredWidth, preferredHeight));
-      	
-//    	18+2
-    	
-    	
-        
-        
+
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
         int width = gd.getDisplayMode().getWidth();
         int height = gd.getDisplayMode().getHeight();
         int numBlocksHorizontal = mapLayout[0].length + 2;
         int numBlocksVertical = mapLayout.length + 2;
-        System.out.println(width + " " + height);
         tileWidth = Math.floorDiv(width, numBlocksHorizontal);
         tileHeight = Math.floorDiv(height, numBlocksVertical);
-        System.out.println(numBlocksHorizontal + " " + numBlocksVertical);
         tileWidth = Math.min(tileWidth, tileHeight);
         tileHeight = tileWidth;        
-        System.out.println(tileWidth + " pixels wide");
         playerSize = (int)(tileHeight*1.5);
         
+        //These values are used in the paintComponent function to align the player and map to the screen
         yOffset = (width-(tileWidth*mapLayout[0].length))/2;
-        System.out.println(width + " " + tileWidth + " " + mapLayout[0].length);
         xOffset = (height-(tileHeight*mapLayout.length))/2;
-        System.out.println(yOffset + " " + xOffset);
-
         playerYOffset = (int) (yOffset - 0.25*playerSize);
-        
         playerXOffset = (int) (xOffset - 0.83*playerSize);
         
         
+        player.setMapLayout(mapLayout);
+        player.setTileSize(tileWidth);
+        
+        
     }
+    
 
     @Override
     public void paintComponent(Graphics g) {
@@ -245,6 +238,8 @@ public class Map extends JPanel {
   
         
     }
+    
+    
 
     public static void main(String[] args) {
         // http://docs.oracle.com/javase/tutorial/uiswing/concurrency/initial.html
@@ -256,7 +251,7 @@ public class Map extends JPanel {
                 player.setYLocation(0);
                 
                 Map map = new Map(player);
-                //map.setBackground(BACKGROUND);
+                
                 frame.add(map);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
