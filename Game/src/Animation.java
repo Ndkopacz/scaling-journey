@@ -24,8 +24,6 @@ public class Animation {
         for (int i = 0; i < frames.length; i++) {
             addFrame(frames[i], frameDelay);
         }
-        
-        System.out.println("Total frames: " + this.frames.size());
 
         this.currentFrame = 0;
         this.animationDirection = 1;
