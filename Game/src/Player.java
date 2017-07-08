@@ -320,6 +320,64 @@ public class Player extends JPanel
 					animation.start();
 				}
 				break;
+			case 'x':
+				spell = null;
+				spell = new Spell(Spell.SpellType.ICESHIELD);
+		        r = new Runnable() {
+		            public void run() {
+		          	 spell.update();
+		            }
+		            };
+		          new Thread(r).start(); 
+				if (direction == 1){
+					animation = castLeft;
+					animation.reset();
+					animation.start();
+				} else if (direction == 3){
+					animation = castRight;
+					animation.reset();
+					animation.start();
+				} else if (direction == 0){
+					animation = castUp;
+					animation.reset();
+					animation.start();
+				} else if (direction == 2){
+					animation = castDown;
+					animation.reset();
+					animation.start();
+				}
+				break;		
+			case 'z':
+				spell = null;
+
+				if (direction == 1){
+					spell = new Spell(Spell.SpellType.TURTLESHELL_SIDE);
+					animation = castLeft;
+					animation.reset();
+					animation.start();
+				} else if (direction == 3){
+					spell = new Spell(Spell.SpellType.TURTLESHELL_SIDE);
+					animation = castRight;
+					animation.reset();
+					animation.start();
+				} else if (direction == 0){
+					spell = new Spell(Spell.SpellType.TURTLESHELL_FRONT);
+					animation = castUp;
+					animation.reset();
+					animation.start();
+				} else if (direction == 2){
+					spell = new Spell(Spell.SpellType.TURTLESHELL_FRONT);
+					animation = castDown;
+					animation.reset();
+					animation.start();
+				}
+		        r = new Runnable() {
+		            public void run() {
+		          	 spell.update();
+		            }
+		            };
+		        new Thread(r).start(); 
+				break;				
 			}
 
 		}
@@ -515,6 +573,9 @@ public class Player extends JPanel
 	  this.tileSize = tileSize;
   }
 
+  public int getDirection(){
+	  return direction;
+  }
 
 
 }

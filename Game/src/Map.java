@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -157,11 +158,11 @@ public class Map extends JPanel {
         int height = gd.getDisplayMode().getHeight();
         int numBlocksHorizontal = mapLayout[0].length + 2;
         int numBlocksVertical = mapLayout.length + 2;
-        tileWidth = Math.floorDiv(width, numBlocksHorizontal);
-        tileHeight = Math.floorDiv(height, numBlocksVertical);
-        tileWidth = Math.min(tileWidth, tileHeight);
-        tileHeight = tileWidth;        
-        playerSize = (int)(tileHeight*1.5);
+//        tileWidth = Math.floorDiv(width, numBlocksHorizontal);
+//        tileHeight = Math.floorDiv(height, numBlocksVertical);
+//        tileWidth = Math.min(tileWidth, tileHeight);
+//        tileHeight = tileWidth;        
+//        playerSize = (int)(tileHeight*1.5);
         
         //These values are used in the paintComponent function to align the player and map to the screen
         yOffset = (width-(tileWidth*mapLayout[0].length))/2;
@@ -230,8 +231,41 @@ public class Map extends JPanel {
         }
         
         if(player.getSpell() != null && player.getSpell().getSpellSprite()[0] != null){
-        	
-        	g.drawImage(player.getSpell().getSpellSprite()[0], player.getYLocation()+playerSize/2+playerYOffset, player.getXLocation()+playerXOffset, (int)(Math.round(playerSize*1.75)), playerSize,  null);	
+        	if(player.getSpell().getSpellType() == Spell.SpellType.FIRELION){
+        		if(player.getDirection() != 1){
+        			//facing right
+        			g.drawImage(player.getSpell().getSpellSprite()[0], player.getYLocation()+playerSize/2+playerYOffset, player.getXLocation()+playerXOffset+(int)(Math.round(.069*playerSize)), (int)(Math.round(playerSize*1.75)), playerSize,  null);
+        		} else {
+        			//facing left
+        			g.drawImage(player.getSpell().getSpellSprite()[0], player.getYLocation()+playerSize/2+playerYOffset, player.getXLocation()+playerXOffset+(int)(Math.round(.069*playerSize)), -(int)(Math.round(playerSize*1.75)), playerSize,  null);
+        		}	
+        		
+        	} else if(player.getSpell().getSpellType() == Spell.SpellType.ICESHIELD || player.getSpell().getSpellType() == Spell.SpellType.TURTLESHELL_FRONT ) {
+            	g.drawImage(player.getSpell().getSpellSprite()[0], player.getYLocation()-playerSize/4+playerYOffset-(int)(Math.round(.0695*playerSize)), player.getXLocation()-playerSize/4+playerXOffset+(int)(Math.round(.052*playerSize)), (int)(Math.round(playerSize*1.75)), (int)(Math.round(playerSize*1.75)),  null);
+        	} else if(player.getSpell().getSpellType() == Spell.SpellType.TORRENT ) {
+        		//In front of player
+        		//g.drawImage(player.getSpell().getSpellSprite()[0], player.getYLocation()+playerSize/2+playerYOffset, player.getXLocation()+playerXOffset-40, (int)(Math.round(playerSize*1.75)), (int)(Math.round(playerSize*1.75)),  null);
+        		//TODO: figure out aimer, move it around then fire
+        		g.drawImage(player.getSpell().getSpellSprite()[0], player.getYLocation()+playerYOffset-(int)(Math.round(.304*playerSize)), player.getXLocation()+playerXOffset-playerSize/4-(int)(Math.round(.086*playerSize)), (int)(Math.round(playerSize*1.75)), (int)(Math.round(playerSize*1.75)),  null);
+
+        	} else if(player.getSpell().getSpellType() == Spell.SpellType.SNAKEBITE ) {
+        		if(player.getDirection() != 1){
+        			//facing right
+        			g.drawImage(player.getSpell().getSpellSprite()[0], player.getYLocation()+playerYOffset+2*playerSize, player.getXLocation()+playerXOffset-playerSize/4, -1*(int)(Math.round(playerSize*1.75)), (int)(Math.round(playerSize*1.75)),  null);
+        		} else {
+        			//facing left
+        			g.drawImage(player.getSpell().getSpellSprite()[0], player.getYLocation()+playerYOffset-playerSize, player.getXLocation()+playerXOffset-playerSize/4, (int)(Math.round(playerSize*1.75)), (int)(Math.round(playerSize*1.75)),  null);
+        		}
+        	} else	if(player.getSpell().getSpellType() == Spell.SpellType.TURTLESHELL_SIDE){
+        		if(player.getDirection() != 1){
+        			//facing right
+        			g.drawImage(player.getSpell().getSpellSprite()[0], player.getYLocation()+playerSize/2+playerYOffset+(int)(Math.round(.609*playerSize)), player.getXLocation()+playerXOffset-(int)(Math.round(.26*playerSize)), -(int)(Math.round(playerSize*1.75)), (int)(Math.round(playerSize*1.75)),  null);
+        		} else {
+        			//facing left
+        			g.drawImage(player.getSpell().getSpellSprite()[0], player.getYLocation()+playerSize/2+playerYOffset-(int)(Math.round(.565*playerSize)), player.getXLocation()+playerXOffset-(int)(Math.round(.26*playerSize)), (int)(Math.round(playerSize*1.75)), (int)(Math.round(playerSize*1.75)),  null);
+        		}	
+        		
+        	}
         }
         
     	this.repaint();
