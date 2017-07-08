@@ -17,6 +17,10 @@ public class Map extends JPanel {
     private int tileWidth = 32;
     private static final int PREFERRED_GRID_SIZE_PIXELS = 32;
     private int playerSize = 48;
+    private int xOffset = 0;
+    private int yOffset = 0;
+    private int playerYOffset = 0;
+    private int playerXOffset = 0;
     
     private ArrayList<BufferedImage> gameTiles;
 
@@ -47,7 +51,6 @@ public class Map extends JPanel {
    
     public Map(Player player){
     	this.player = player;
-    	
         
         Runnable r = new Runnable() {
           public void run() {
@@ -89,6 +92,8 @@ public class Map extends JPanel {
     		{"000", "000", "1BL", "1B0", "1B0", "1B0", "1B0", "1BR", "000", "000", "1BL", "1B0", "1B0", "1B0", "1B0", "1B0", "1B0", "1BR"},
     		{"000", "000", "1BB", "1BB", "1BB", "1BB", "1BB", "1BB", "000", "000", "1BB", "1BB", "1BB", "1BB", "1BB", "1BB", "1BB", "1BB"}
     	};
+  
+    	
     	
     	numRows = mapLayout.length;
     	numCols = mapLayout[0].length;
@@ -143,10 +148,40 @@ public class Map extends JPanel {
         }
     	
     
+//    	
+//        int preferredWidth = (numCols+2) * PREFERRED_GRID_SIZE_PIXELS;
+//        int preferredHeight = (numRows+2) * PREFERRED_GRID_SIZE_PIXELS;
+//        setPreferredSize(new Dimension(preferredWidth, preferredHeight));
+      	
+//    	18+2
     	
-        int preferredWidth = (numCols+2) * PREFERRED_GRID_SIZE_PIXELS;
-        int preferredHeight = (numRows+2) * PREFERRED_GRID_SIZE_PIXELS;
-        setPreferredSize(new Dimension(preferredWidth, preferredHeight));
+    	
+        
+        
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        int width = gd.getDisplayMode().getWidth();
+        int height = gd.getDisplayMode().getHeight();
+        int numBlocksHorizontal = mapLayout[0].length + 2;
+        int numBlocksVertical = mapLayout.length + 2;
+        System.out.println(width + " " + height);
+        tileWidth = Math.floorDiv(width, numBlocksHorizontal);
+        tileHeight = Math.floorDiv(height, numBlocksVertical);
+        System.out.println(numBlocksHorizontal + " " + numBlocksVertical);
+        tileWidth = Math.min(tileWidth, tileHeight);
+        tileHeight = tileWidth;        
+        System.out.println(tileWidth + " pixels wide");
+        playerSize = (int)(tileHeight*1.5);
+        
+        yOffset = (width-(tileWidth*mapLayout[0].length))/2;
+        System.out.println(width + " " + tileWidth + " " + mapLayout[0].length);
+        xOffset = (height-(tileHeight*mapLayout.length))/2;
+        System.out.println(yOffset + " " + xOffset);
+
+        playerYOffset = (int) (yOffset - 0.25*playerSize);
+        
+        playerXOffset = (int) (xOffset - 0.83*playerSize);
+        
+        
     }
 
     @Override
@@ -159,17 +194,18 @@ public class Map extends JPanel {
         g.setColor(BACKGROUND);
         g.fillRect(0, 0, getWidth(), getHeight());
         
+        
         // Draw the grid
         //setBackground(BACKGROUND);
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
             	
-                int x = (i+1) * tileWidth;
-                int y = (j+1) * tileHeight;           
+                int x = (i) * tileWidth;
+                int y = (j) * tileHeight;           
                 int tileLable = mapGrid[i][j];
                 if(tileLable != 27)
                 {
-                	g.drawImage(gameTiles.get(tileLable), y, x, tileWidth, tileHeight, null);
+                	g.drawImage(gameTiles.get(tileLable), y+yOffset, x+xOffset, tileWidth, tileHeight, null);
                 }
                 
 
@@ -177,22 +213,22 @@ public class Map extends JPanel {
         }
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
-                int x = (i+1) * tileWidth;
-                int y = (j+1) * tileHeight;           
+                int x = (i) * tileWidth;
+                int y = (j) * tileHeight;           
                 int tileLable = mapGrid[i][j];
                 if(tileLable == 27)
                 {
-                	int offSetPerSide = tileWidth/16*2;
-                	g.drawImage(gameTiles.get(tileLable), y-offSetPerSide, x+offSetPerSide/4, tileWidth+2*offSetPerSide, tileHeight, null);
+                	int bridgeOffsetPerSide = tileWidth/16*2;
+                	g.drawImage(gameTiles.get(tileLable), y-bridgeOffsetPerSide+yOffset, x+bridgeOffsetPerSide/4+xOffset, tileWidth+2*bridgeOffsetPerSide, tileHeight, null);
                 }         
             }
         }
         try{
 	        for (int i = 0; i < player.getPlayerSprite().length ; i++){
 	        	if(player.getPlayerSprite()[i].getHeight() < 192){
-	        		g.drawImage(player.getPlayerSprite()[i], player.getYLocation(), player.getXLocation(), playerSize, playerSize,  null);
+	        		g.drawImage(player.getPlayerSprite()[i], player.getYLocation()+playerYOffset, player.getXLocation()+playerXOffset, playerSize, playerSize,  null);
 	        	} else {
-	            	g.drawImage(player.getPlayerSprite()[i], player.getYLocation()-playerSize, player.getXLocation()-playerSize, playerSize*3, playerSize*3,  null);
+	            	g.drawImage(player.getPlayerSprite()[i], player.getYLocation()-playerSize+playerYOffset, player.getXLocation()-playerSize+playerXOffset, playerSize*3, playerSize*3,  null);
 	        	}
 	        }
         } catch(NullPointerException e)
@@ -202,7 +238,7 @@ public class Map extends JPanel {
         
         if(player.getSpell() != null && player.getSpell().getSpellSprite()[0] != null){
         	
-        	g.drawImage(player.getSpell().getSpellSprite()[0], player.getYLocation()+playerSize/2, player.getXLocation(), (int)(Math.round(playerSize*1.75)), playerSize,  null);	
+        	g.drawImage(player.getSpell().getSpellSprite()[0], player.getYLocation()+playerSize/2+playerYOffset, player.getXLocation()+playerXOffset, (int)(Math.round(playerSize*1.75)), playerSize,  null);	
         }
         
     	this.repaint();
@@ -216,15 +252,18 @@ public class Map extends JPanel {
             public void run() {
                 JFrame frame = new JFrame("Game");
                 Player player = new Player(); 
-                player.setXLocation(48);
-                player.setYLocation(48);
+                player.setXLocation(0);
+                player.setYLocation(0);
                 
                 Map map = new Map(player);
                 //map.setBackground(BACKGROUND);
                 frame.add(map);
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+
                 frame.pack();
                 frame.setVisible(true); 
+                
 
 
             }
