@@ -10,6 +10,9 @@ public class Spell extends JPanel
 {
 	
 	private Animation firelionAnimation = null;
+	private Animation iceshieldAnimation = null;
+	private Animation snakebiteAnimation = null;
+	private Animation torrentAnimation = null;
 	
 	boolean ready = false;
 	// This is the actual animation
@@ -41,14 +44,51 @@ public class Spell extends JPanel
 				iteration++;
 			}
 		}
+		firelionAnimation = new Animation(firelion, 100, false);	
 		
-		System.out.println("Animation size: " + firelion.length);
+		BufferedImage[][] iceshield = new BufferedImage[18][1];
+		iteration = 1;
+		for(int i=0; i<=3; i++){
+			for(int j=0;j<=3;j++){
+				iceshield[iteration] = SpriteSpell.getSprite(j, i, SpellType.ICESHIELD);
+				iteration++;
+			}
+		}
+		iceshieldAnimation = new Animation(iceshield, 100, false);	
 		
-		firelionAnimation = new Animation(firelion, 100, false);		
+		BufferedImage[][] snakebite = new BufferedImage[18][1];
+		iteration = 1;
+		for(int i=0; i<=3; i++){
+			for(int j=0;j<=3;j++){
+				snakebite[iteration] = SpriteSpell.getSprite(j, i, SpellType.ICESHIELD);
+				iteration++;
+			}
+		}
+		snakebiteAnimation = new Animation(snakebite, 100, false);		
+		
+		BufferedImage[][] torrent = new BufferedImage[18][1];
+		iteration = 1;
+		for(int i=0; i<=3; i++){
+			for(int j=0;j<=3;j++){
+				torrent[iteration] = SpriteSpell.getSprite(j, i, SpellType.TORRENT);
+				iteration++;
+			}
+		}
+		torrentAnimation = new Animation(torrent, 100, false);		
+		
+		
 		switch (spellType) {
 			case FIRELION:
-				System.out.println("set animation to FL");
 				animation = firelionAnimation;
+				break;
+			case ICESHIELD:
+				animation = iceshieldAnimation;
+				break;
+			case TORRENT:
+				animation = torrentAnimation;
+				break;
+			case SNAKEBITE:
+				animation = snakebiteAnimation;
 				break;
 		}
 		

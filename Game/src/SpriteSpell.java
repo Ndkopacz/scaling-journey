@@ -49,7 +49,6 @@ public class SpriteSpell {
 
 
         BufferedImage[] sprites = new BufferedImage[1];
-        System.out.println(xGrid + " " + yGrid);
         sprites[0] = spriteSheet_spell.getSubimage(xGrid * tileSize, yGrid * tileSize, tileSize, tileSize);
 
         return sprites;
