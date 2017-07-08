@@ -158,7 +158,7 @@ public class Player extends JPanel
 		
 		@Override
 		public void keyTyped(KeyEvent e) {
-			System.out.println("Key typed event " + e.getKeyChar());
+//			System.out.println("Key typed event " + e.getKeyChar());
 			switch (e.getKeyChar()) {
 			case ' ':
 				if (direction == 1){
@@ -184,7 +184,6 @@ public class Player extends JPanel
 				spell = new Spell(Spell.SpellType.FIRELION);
 		        Runnable r = new Runnable() {
 		            public void run() {
-		          	 System.out.println("Starting player update.");
 		          	 spell.update();
 		            }
 		            };
@@ -212,7 +211,6 @@ public class Player extends JPanel
 				spell = new Spell(Spell.SpellType.TORRENT);
 		        r = new Runnable() {
 		            public void run() {
-		          	 System.out.println("Starting player update.");
 		          	 spell.update();
 		            }
 		            };
@@ -240,7 +238,6 @@ public class Player extends JPanel
 				spell = new Spell(Spell.SpellType.SNAKEBITE);
 		        r = new Runnable() {
 		            public void run() {
-		          	 System.out.println("Starting player update.");
 		          	 spell.update();
 		            }
 		            };
@@ -298,7 +295,6 @@ public class Player extends JPanel
 		
 		@Override
 		public void keyPressed(KeyEvent e) {
-			System.out.println("Key " + e.getKeyCode());
 			switch (e.getKeyCode()){
 				case 39:
 					if(!leftPressed && !upPressed && !downPressed)
