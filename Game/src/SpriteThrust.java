@@ -13,8 +13,9 @@ public class SpriteThrust {
     private static BufferedImage spriteSheet_shoes;
     private static BufferedImage spriteSheet_hood;
     private static BufferedImage spriteSheet_gloves;
-    private static BufferedImage spriteSheet_shield;
+    private static BufferedImage spriteSheet_weapon;
     private static BufferedImage spriteSheet_shadow;
+    private static BufferedImage spriteSheet_shield;
     private static final int TILE_SIZE = 64;
     private static final int TILE_SIZE_LARGE = 192;
 
@@ -58,13 +59,16 @@ public class SpriteThrust {
         	spriteSheet_gloves = loadSprite("HANDS_plate_armor_gloves.png");
         }
         if (spriteSheet_shield == null) {
-//        	spriteSheet_shield = loadSprite("glowsword_red_male.png");
-        	spriteSheet_shield = loadSprite("WEAPON_long_spear.png");
+        	spriteSheet_shield = loadSprite("WEAPON_shield_cutout_chain_armor_helmet.png");
+        }
+        if (spriteSheet_weapon == null) {
+//        	spriteSheet_weapon = loadSprite("glowsword_red_male.png");
+        	spriteSheet_weapon = loadSprite("WEAPON_long_spear.png");
 
 
         }
         
-        BufferedImage[] sprites = new BufferedImage[9];
+        BufferedImage[] sprites = new BufferedImage[10];
         sprites[0] = spriteSheet_shadow;
         sprites[1] = spriteSheet_body.getSubimage(xGrid * TILE_SIZE, yGrid * TILE_SIZE, TILE_SIZE, TILE_SIZE);
         sprites[2] = spriteSheet_shoes.getSubimage(xGrid * TILE_SIZE, yGrid * TILE_SIZE, TILE_SIZE, TILE_SIZE);
@@ -73,7 +77,8 @@ public class SpriteThrust {
         sprites[5] = spriteSheet_belt.getSubimage(xGrid * TILE_SIZE, yGrid * TILE_SIZE, TILE_SIZE, TILE_SIZE);
         sprites[6] = spriteSheet_hood.getSubimage(xGrid * TILE_SIZE, yGrid * TILE_SIZE, TILE_SIZE, TILE_SIZE);
         sprites[7] = spriteSheet_gloves.getSubimage(xGrid * TILE_SIZE, yGrid * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-        sprites[8] = spriteSheet_shield.getSubimage(xGrid * TILE_SIZE_LARGE, yGrid * TILE_SIZE_LARGE, TILE_SIZE_LARGE, TILE_SIZE_LARGE);
+        sprites[8] = spriteSheet_weapon.getSubimage(xGrid * TILE_SIZE_LARGE, yGrid * TILE_SIZE_LARGE, TILE_SIZE_LARGE, TILE_SIZE_LARGE);
+        sprites[9] = spriteSheet_shield.getSubimage(xGrid * TILE_SIZE, yGrid * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 
         return sprites;
     }
